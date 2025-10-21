@@ -1,12 +1,12 @@
-# Use the official Invoice Ninja all-in-one (nginx + php-fpm + supervisord)
-FROM invoiceninja/invoiceninja:5.9.5
+FROM invoiceninja/invoiceninja:5
 
-# Ensure we can fix permissions at startup
 USER root
+RUN apk add --no-cache nginx
 
-# Add our startup script
+# Nginx config for Laravel public dir and php-fpm on 127.0.0.1:9000
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Use our script as the default command
+EXPOSE 80
 CMD ["/bin/sh", "/start.sh"]
